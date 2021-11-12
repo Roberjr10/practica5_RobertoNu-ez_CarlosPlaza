@@ -1,5 +1,36 @@
 <?php
-
+    //Funcion que comprueba si el usuario escribe un numero
+    function no_numeros($string){
+        $regex = "/[0-9]/";
+       if(preg_match($regex, $string) == 0){
+           echo "no tiene numeros";
+       }else{
+           echo "Error el campo que has introducido tiene un numero";
+       }
+       }
+    //Funcion que comprueba si el usuario ha introducido una letra
+    function no_letras($numero){
+        $regex = "/[A-Za-zÑñ]/";
+        if(preg_match($regex, $numero) == 0){
+            echo "<br/>Son todos numeros ";
+        }else{
+            echo "<br/>tiene almenos una letra ";
+        }
+    }
+    //Funcion para validar email
+    function validar_email($string){
+        $regex="/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/";
+       echo preg_match($regex,$string);
+    }
+    //Funcion para validar la pagina web
+    function validar_web($string){
+       $regex = "/^(http|https|ftp):\/\/(([A-Z0-9][A-Z0-9_-]*)(\.[A-Z0-9][A-Z0-9_-]*)+.(com|org|net|dk|at|us|tv|info|uk|co.uk|biz|se)$)(:(\d+))?\/?/i";
+       echo preg_match($regex,$string);
+    }
+    no_numeros("holadas1s");
+    no_letras(123);
+    validar_email("sa@hotmail.com");
+    validar_web("https://www.asdsaa.com");
 ?>
 <!doctype html>
 <html lang="es">
