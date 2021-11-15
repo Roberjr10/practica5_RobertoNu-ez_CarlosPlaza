@@ -27,10 +27,21 @@
        $regex = "/^(http|https|ftp):\/\/(([A-Z0-9][A-Z0-9_-]*)(\.[A-Z0-9][A-Z0-9_-]*)+.(com|org|net|dk|at|us|tv|info|uk|co.uk|biz|se)$)(:(\d+))?\/?/i";
        echo preg_match($regex,$string);
     }
+    /*Requisitos Entre 8 y 16 caracteres
+        Al menos un número
+        Al menos una mayúscula
+        Al menos una minúscula
+        Al menos un caracter extraño*/
+    //Funcion que comprueba si la contraseña cumple lo requisitos
+    function validar_password($string){
+        $regex = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W)[A-Za-z\d\W]{8,16}$/";
+        echo preg_match($regex,$string);
+    }
     no_numeros("holadas1s");
     no_letras(123);
     validar_email("sa@hotmail.com");
     validar_web("https://www.asdsaa.com");
+    validar_password("Ajj");
 ?>
 <!doctype html>
 <html lang="es">
