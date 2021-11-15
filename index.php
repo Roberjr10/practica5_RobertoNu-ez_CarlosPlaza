@@ -43,7 +43,7 @@
 </head>
 <body>
 
-    <form action="EntradaDatos.php" method="POST">
+    <form action="index.php" method="POST">
         <fieldset>
             <legend>Rellena tus datos personales</legend>
             Nombre: <input type="text" name="nombre"/><br><br>
