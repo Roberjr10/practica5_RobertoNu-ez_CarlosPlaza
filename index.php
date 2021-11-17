@@ -1,4 +1,6 @@
 <?php
+    //Array para guardar las provincias
+    $provincias = [];
     //Funcion que comprueba si el usuario escribe un numero
     function no_numeros($string){
         $regex = "/[0-9]/";
@@ -20,11 +22,13 @@
     //Funcion para validar email
     function validar_email($string){
         $regex="/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/";
+        //Si el preg_match devuelve un 1 significa que es valido.
        echo preg_match($regex,$string);
     }
     //Funcion para validar la pagina web
     function validar_web($string){
        $regex = "/^(http|https|ftp):\/\/(([A-Z0-9][A-Z0-9_-]*)(\.[A-Z0-9][A-Z0-9_-]*)+.(com|org|net|dk|at|us|tv|info|uk|co.uk|biz|se)$)(:(\d+))?\/?/i";
+        //Si el preg_match devuelve un 1 significa que es valido.
        echo preg_match($regex,$string);
     }
     /*Requisitos Entre 8 y 16 caracteres
@@ -35,13 +39,31 @@
     //Funcion que comprueba si la contraseña cumple lo requisitos
     function validar_password($string){
         $regex = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W)[A-Za-z\d\W]{8,16}$/";
+        //Si el preg_match devuelve un 1 significa que es valido.
         echo preg_match($regex,$string);
     }
-    no_numeros("holadas1s");
-    no_letras(123);
-    validar_email("sa@hotmail.com");
-    validar_web("https://www.asdsaa.com");
-    validar_password("Ajj");
+
+    //Leer ficheros y guardarlos en un array.
+    $archivo = file_get_contents("archivo.txt");
+    $array_general = explode("\n", $archivo);
+    foreach ($array_general as $fila){
+        //El limit es +2 porque tiene que ser positivo para que cuando la funcion
+        //encuentre el primer espacio salte directamente y no lo haga por cada espacio que encuentre
+    $item = explode(" ", $fila, +2);
+    $provincias[] = [
+        'numero' => $item[0],
+        'nombre' => $item[1]
+     ];
+    }
+
+    //Funcion para comprobar el código postal
+    function cod_postal($numero){
+        if(isset($_POST['guardar'])){
+
+        }
+    }
+
+
 ?>
 <!doctype html>
 <html lang="es">
@@ -57,17 +79,22 @@
     <form action="index.php" method="POST">
         <fieldset>
             <legend>Rellena tus datos personales</legend>
-            Nombre: <input type="text" name="nombre"/><br><br>
-            Primer Apellido: <input type="text" name="apellido1"/>
-            Segundo Apellido: <input type="text" name="apellido2"/><br><br>
-            Dirección: <input type="text" name="direccion" placeholder="c/,nº"/><br><br>
-            Ciudad: <input type="text" name="ciudad"/>
-            Provincia: <input type="text" name="provincia"/>
-            Código Postal: <input type="text" name="cp"/><br><br>
-            Teléfono: <input type="text" name="tlf"/><br><br>
-            Email: <input type="text" name="email">
-            Contraseña: <input type="password" name="password"><br><br>
-            Web: <input type="text" name="web"><br><br>
+            <label for="">Nombre: </label> <input type="text" name="nombre"/><br><br>
+            <label for="">Primer Apellido:</label> <input type="text" name="apellido1"/>
+            <label for="">Segundo Apellido:</label><input type="text" name="apellido2"/><br><br>
+            <label for="">Dirección: </label><input type="text" name="direccion" placeholder="c/,nº"/><br><br>
+             <label for="">Ciudad:</label> <input type="text" name="ciudad"/>
+            <label for=""> Provincia: </label>
+            <select name="provincias" id="">
+            <?php foreach ($provincias as $key => $row) {?>
+                <option value="<?php echo $key; ?>" ><?php echo $row['nombre']; ?></option>
+            <?php } ?>
+            </select>
+             <label for="">Código Postal: </label><input type="number" value="" name="cp"/><br><br>
+             <label for="">Teléfono: </label><input type="text" name="tlf"/><br><br>
+             <label for="">Email: </label><input type="text" name="email">
+             <label for="">Contraseña:</label> <input type="password" name="password"><br><br>
+             <label for="">Web:</label> <input type="text" name="web"><br><br>
             <input type="submit" value="Guardar" name="guardar"/>
             <input type="reset" value="Reiniciar" name="reiniciar">
         </fieldset>
