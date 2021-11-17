@@ -14,9 +14,9 @@
     function no_letras($numero){
         $regex = "/[^0-9]/";
         if(preg_match($regex, $numero) == 0){
-            echo "<br/>Son todos numeros ";
+            echo "Son todos numeros<br/>";
         }else{
-            echo "<br/>tiene almenos una letra ";
+            echo "tiene almenos una letra<br/>";
         }
     }
     //Funcion para validar email
@@ -29,7 +29,7 @@
     function validar_web($string){
        $regex = "/^(http|https|ftp):\/\/(([A-Z0-9][A-Z0-9_-]*)(\.[A-Z0-9][A-Z0-9_-]*)+.(com|org|net|dk|at|us|tv|info|uk|co.uk|biz|se)$)(:(\d+))?\/?/i";
         //Si el preg_match devuelve un 1 significa que es valido.
-       echo preg_match($regex,$string);
+       return preg_match($regex,$string);
     }
     /*Requisitos Entre 8 y 16 caracteres
         Al menos un número
@@ -40,7 +40,7 @@
     function validar_password($string){
         $regex = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W)[A-Za-z\d\W]{8,16}$/";
         //Si el preg_match devuelve un 1 significa que es valido.
-        echo preg_match($regex,$string);
+        return preg_match($regex,$string);
     }
 
     //Leer ficheros y guardarlos en un array.
@@ -67,6 +67,57 @@
             }
         }
     }
+
+    if (isset($_POST['guardar'])){//recojo los valores del formulario y los guardo en variables
+        $nombre = filter_input(INPUT_POST, 'nombre', FILTER_SANITIZE_STRING);
+        $apellido1 = filter_input(INPUT_POST, 'apellido', FILTER_SANITIZE_STRING);
+        $apellido2 = filter_input(INPUT_POST, 'apellido', FILTER_SANITIZE_STRING);
+        $direccion = filter_input(INPUT_POST, 'direccion', FILTER_SANITIZE_STRING);
+        $ciudad = filter_input(INPUT_POST, 'ciudad', FILTER_SANITIZE_STRING);
+        $provincia = filter_input(INPUT_POST, 'provincia', FILTER_SANITIZE_STRING);
+        $cp = filter_input(INPUT_POST, 'cp', FILTER_SANITIZE_STRING);
+        $tlf = filter_input(INPUT_POST, 'tlf', FILTER_SANITIZE_STRING);
+        $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_STRING);
+        $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
+        $web = filter_input(INPUT_POST, 'web', FILTER_SANITIZE_STRING);
+
+        no_numeros($nombre);//compruebo si nombre lleva numeros
+
+        no_numeros($apellido1);//compruebo si apellido lleva numeros
+
+        no_numeros($apellido2);//compruebo si apellido lleva numeros
+
+        no_numeros($ciudad);//compruebo si ciudad lleva numeros
+
+        no_letras($tlf);//compruebo si telefono lleva letras
+
+        if(strlen($tlf) != 9){//compruebo si telefono tiene 9 digitos
+            echo "tu teléfono debe llevar 9 digitos"."<br>";
+        }
+        no_letras($cp);//compruebo si codigo postal lleva letras
+
+        if(strlen($cp) != 5){//compruebo si codigo postal tiene 5 digitos
+            echo "tu cp debe llevar 5 digitos"."<br>";
+        }
+        if(validar_email($email) != 1){//compruebo si la estructura del email es correcta
+            echo "tu email es incorrecto"."<br>";
+        }else{
+            echo "tu email es correcto"."<br>";
+        }
+        if(validar_password($password) != 1){//compruebo si contraseña es correcta(mayuscula,minuscula,numero,caracter especial,longitud de 8-16)
+            echo "tu contraseña es incorrecta"."<br>";
+        }else{
+            echo "tu contraseña es correcto"."<br>";
+        }
+        if(validar_web($web) == 1){//comprueba que la estructura de la web sea correcta
+            echo "tu web es incorrecta"."<br>";
+        }else{
+            echo "tu web es correcta"."<br>";
+        }
+
+
+    }
+
 
 ?>
 <!doctype html>
