@@ -3,16 +3,16 @@
     $provincias = [];
     //Funcion que comprueba si el usuario escribe un numero
     function no_numeros($string){
-        $regex = "/[0-9]/";
+        $regex = "/[^A-Za-z]/";
        if(preg_match($regex, $string) == 0){
-           echo "no tiene numeros";
+           echo "no tiene numeros<br/>";
        }else{
-           echo "Error el campo que has introducido tiene un numero";
+           echo "Error el campo que has introducido tiene un numero<br/>";
        }
        }
     //Funcion que comprueba si el usuario ha introducido una letra
     function no_letras($numero){
-        $regex = "/[A-Za-zÑñ]/";
+        $regex = "/[^0-9]/";
         if(preg_match($regex, $numero) == 0){
             echo "<br/>Son todos numeros ";
         }else{
@@ -23,7 +23,7 @@
     function validar_email($string){
         $regex="/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/";
         //Si el preg_match devuelve un 1 significa que es valido.
-       echo preg_match($regex,$string);
+       return preg_match($regex,$string);
     }
     //Funcion para validar la pagina web
     function validar_web($string){
@@ -59,10 +59,14 @@
     //Funcion para comprobar el código postal
     function cod_postal($numero){
         if(isset($_POST['guardar'])){
-
+            $valor = $_POST['provincias'];
+            echo $valor;
+            //Si el value del option es distintos a los dos primeros digitos pasados pro la funcion dara un error.
+            if( $valor !== substr($numero,0,2)){
+                echo "error";
+            }
         }
     }
-
 
 ?>
 <!doctype html>
@@ -87,7 +91,7 @@
             <label for=""> Provincia: </label>
             <select name="provincias" id="">
             <?php foreach ($provincias as $key => $row) {?>
-                <option value="<?php echo $key; ?>" ><?php echo $row['nombre']; ?></option>
+                <option value="<?php echo $row['numero']; ?>" ><?php echo $row['nombre']; ?></option>
             <?php } ?>
             </select>
              <label for="">Código Postal: </label><input type="number" value="" name="cp"/><br><br>
