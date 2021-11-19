@@ -1,0 +1,58 @@
+
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+
+}
+
+.contendor-form{
+    width: 800px;
+    background: #287dda;
+    padding: 30px;
+    margin: auto;
+    border-radius: 25px;
+    margin-top: 50px;
+
+
+}
+.fieldset{
+    padding: 25px;
+    border: 3px solid;
+}
+.fieldset legend{
+    font-size: 20px;
+}
+input:focus {
+    background: rgb(168, 168, 168);
+}
+.inputs_datos {
+    width: 30%;
+    background-color: #ccc;
+    padding: 5px;
+    border-radius: 5px;
+
+}
+.botones{
+    width: 45%;
+    background-color: darkblue;
+    color: white;
+    font-size: 16px;
+    margin-left: 175px;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 10px;
+}
+.botones:hover{
+    background-color: rgba(10, 166, 52, 0.47);
+    cursor: pointer;
+}
+
+label{
+    padding: 5px;
+}
+.img{
+    margin-left: 20px;
+    height: 20px;
+    padding-right: 16px;
+}
