@@ -101,7 +101,10 @@
              <label for="">Contraseña:</label> <input type="password" name="password"class="inputs_datos"><br><br>
              <label for="">Web:</label> <input type="text" name="web"class="inputs_datos"><br><br>
             <input type="submit" value="Guardar" name="guardar" class="botones"/>
-            <?php   if (isset($_POST['guardar'])){//recojo los valores del formulario y los guardo en variables
+            <?php
+            //Variable para contar los aciertos
+            $cont_aciertos = 0;
+            if (isset($_POST['guardar'])){//recojo los valores del formulario y los guardo en variables
                 $nombre = filter_input(INPUT_POST, 'nombre', FILTER_SANITIZE_STRING);
                 $apellido1 = filter_input(INPUT_POST, 'apellido1', FILTER_SANITIZE_STRING);
                 $apellido2 = filter_input(INPUT_POST, 'apellido2', FILTER_SANITIZE_STRING);
@@ -116,14 +119,16 @@
 
 
 
-
                 if((no_numeros($nombre) == 0) && !empty($nombre)) {//compruebo si nombre lleva numeros
                     echo "<p  class = 'errores'> <img class='img' src='img/cheque.png' alt='check'>Tu nombre es correcto</p>";
+                    //Sumamos en uno los aciertos
+                    $cont_aciertos = $cont_aciertos +1;
                 }else{
                     echo "<p class='errores'> <img class='img' src='img/cerrar.png' alt='error'>Error el nombre solo puede llevar letras<br/></p>";
                 }
                 if((no_numeros($apellido1) == 0) && !empty($apellido1)) {//compruebo si apellido lleva numeros
                     echo "<p  class = 'errores'> <img class='img' src='img/cheque.png' alt='check'>Tus apellidos es correcto</p>";
+                    $cont_aciertos = $cont_aciertos +1;
 
                 }else{
                     echo "<p class='errores'><img class='img' src='img/cerrar.png' alt='error'>Error el  primer apellido solo puede llevar letras<br/></p>";
@@ -138,14 +143,14 @@
                 }
                 if((no_numeros($ciudad)==0) && !empty($ciudad)) {//compruebo si ciudad lleva numeros
                     echo "<p  class = 'errores'> <img class='img' src='img/cheque.png' alt='check'>Tu ciudad es correcto</p>";
-
+                    $cont_aciertos = $cont_aciertos +1;
                 }else{
                     echo "<p class='errores'> <img class='img' src='img/cerrar.png' alt='error'>Error la ciudad no puede llevar numeros<br/></div>";
 
                 }
                 if(no_letras($tlf)==0 && !empty($tlf) && strlen($tlf) == 9) {//compruebo si telefono lleva letras
                     echo "<p  class = 'errores'> <img class='img' src='img/cheque.png' alt='check'>Tu numero de teléfono es correcto</p>";
-
+                    $cont_aciertos = $cont_aciertos +1;
                 }else{
                     echo "<p class='errores'> <img class='img' src='img/cerrar.png' alt='error'>EL numero de telefono es incorrecto<br/></div>";
 
@@ -154,6 +159,7 @@
                 if(no_letras($cp) == 0 && !empty($cp) && strlen($cp) == 5 && cod_postal($cp)){//compruebo si codigo postal lleva letras
 
                     echo "<p  class = 'errores'> <img class='img' src='img/cheque.png' alt='check'>Tu codigo postal es correcto</p>";
+                    $cont_aciertos = $cont_aciertos +1;
 
                 }else{
                     echo "<p  class = 'errores'> <img class='img' src='img/cerrar.png' alt='check'>Tu código postal es incorrecto</p>";
@@ -165,29 +171,50 @@
                 if((validar_email($email) == 0)  && empty($email) ){//compruebo si la estructura del email es correcta
                     echo "<p class='errores'> <img class='img' src='img/cerrar.png' alt='error'>Error el email no es válido<br/></p>";
 
+
                 }else{
                     echo "<p  class = 'errores'> <img class='img' src='img/cheque.png' alt='check'>Tu Email es correcto</p>";
+                    $cont_aciertos = $cont_aciertos +1;
+
 
                 }
-                if((validar_password($password) == 0) ){//compruebo si contraseña es correcta(mayuscula,minuscula,numero,caracter especial,longitud de 8-16)
+                if((validar_password($password) == 0  && empty($password) ) ){//compruebo si contraseña es correcta(mayuscula,minuscula,numero,caracter especial,longitud de 8-16)
                     echo "<p class='errores'> <img class='img' src='img/cerrar.png' alt='error'> La contraseña debe tener: entre 8 y 16 caracteres, Al menos un número, Al menos una mayúscula, Al menos una minúscula, Al menos un caracter extraño.</p>";
 
                 }else{
                     echo "<p  class = 'errores'> <img class='img' src='img/cheque.png' alt='check'>Tu contraseña es correcto</p>";
+                    $cont_aciertos = $cont_aciertos +1;
+
 
                 }
-                if(validar_web($web) == 0  ){//comprueba que la estructura de la web sea correcta
+                if(validar_web($web) == 0  && empty($eweb)  ){//comprueba que la estructura de la web sea correcta
                     echo "<p class='errores'> <img class='img' src='img/cerrar.png' alt='error'>Error la web no es válida</p>";
 
                 }else{
                     echo "<p  class = 'errores'> <img class='img' src='img/cheque.png' alt='check'>Tu web es correcta</p>";
+                    $cont_aciertos = $cont_aciertos +1;
+
 
                 }
 
             }
+
             ?>
 
         </fieldset>
     </section>
+    <div class="pop" style="z-index:<?php if($cont_aciertos == 8){ //Si el contador de aciertos es 8 significa que estan todos los inputs validados
+        echo 2;}                                                   //y al z-index de este div lo modificamos en 2 para que se muestre por delante del form
+        if (isset($_GET['vovler'])){ echo -1; } //Si el usuario pulsa volver el z-index volverá a -1 para que se oculte?>">
+        <img src="img/comprobado.png" alt="comprobado">
+        <p>Formulario enviado correctamente.</p>
+        <input type="submit" value="Volver" name="volver" class="botones">
+    </div>
+    <?php
+        if(isset($_GET['volver'])){
+            //Si el usuario pulsa volver se vuelve a cargar la pagina
+            header("Location:index.php");
+        }
+    ?>
 </body>
 </html>
